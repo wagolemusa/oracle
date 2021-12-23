@@ -1,15 +1,21 @@
 pragma solidity 0.5.0;
 import "./EthPriceOracleInterface.sol";
-// 1. import the contents of "openzeppelin-solidity/contracts/ownership/Ownable.sol"
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-contract CallerContract is Ownable { // 2. Make the contract inherit from `Ownable`
+contract CallerContract is Ownable {
     EthPriceOracleInterface private oracleInstance;
     address private oracleAddress;
+    mapping(uint256=>bool) myRequests;
     event newOracleAddressEvent(address oracleAddress);
-    // 3. On the next line, add the `onlyOwner` modifier to the `setOracleInstanceAddress` function definition
+    event ReceivedNewRequestIdEvent(uint256 id);
     function setOracleInstanceAddress (address _oracleInstanceAddress) public onlyOwner {
       oracleAddress = _oracleInstanceAddress;
       oracleInstance = EthPriceOracleInterface(oracleAddress);
-      // 4. Fire `newOracleAddressEvent`
       emit newOracleAddressEvent(oracleAddress);
     }
+    // Define the `updateEthPrice` function
+    function updateEthPrice() public {
+      uint256 id = oracleInstance.getLatestEthPrice();
+      myRequests[id] = true;
+      emit ReceivedNewRequestIdEvent(id);
+    }
+}
