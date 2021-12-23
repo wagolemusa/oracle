@@ -1,0 +1,7 @@
+Declare an address named oracleAddress. Make it private, and don't assign it to anything.
+
+Next, create a function called setOracleInstanceAddress. This function takes an address argument named _oracleInstanceAddress. It's a public function, and it doesn't return anything.
+
+The first line of code should set oracleAddress to _oracleInstanceAddress
+----------------------------------question 1 end here --------------------------
+
