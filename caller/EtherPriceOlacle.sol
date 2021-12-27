@@ -7,9 +7,13 @@ contract EthPriceOracle is Ownable {
   mapping(uint256=>bool) pendingRequests;
   event GetLatestEthPriceEvent(address callerAddress, uint id);
   event SetLatestEthPriceEvent(uint256 ethPrice, address callerAddress);
-  // Start here
   function getLatestEthPrice() public returns (uint256) {
     randNonce++;
     uint id = uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % modulus;
+
+    // Start here
+   pendingRequests[id] = true;
+    emit GetLatestEthPriceEvent(msg.sender, id);
+    return id;
   }
 }
